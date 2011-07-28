@@ -74,17 +74,29 @@ def MOVEPREVIOUS(lst) :
 	return
 
 # head insertion, returns new head
-def INSERT(val, lst) :
+def INSERT(val, pos, lst) :
 	# create new node with cargo 'val'
-	head = Node()
+	n = Node()
 	# set it's 'cargo' field to the 'val' parameter
-	head.cargo = val
-	# set it's 'nxt' field to the current list header
-	head.nxt = lst.head
-	# change the current header to the newly created node
-	lst.head = head
-	# change the current position to the new list head
-	lst.cur = lst.head
+	n.cargo = val
+	if pos == 0 :
+		# set n's 'nxt' field to the current list header
+		n.nxt = lst.head
+		# change the current header to the newly created node
+		lst.head = n
+		# change the current position to the new list head
+		lst.cur = lst.head
+	else :
+		p = FIRST(lst)
+		# move into position
+		# must shift one less than pos times
+		while p and pos > 1 :
+			p = p.nxt
+			pos -= 1
+		n.nxt = p.nxt
+		p.nxt = n
+		# reset lst to the new header
+		#lst = FIRST(p)
 	return
 
 def DELETE(pos, lst) :
@@ -113,12 +125,19 @@ def printList(lst) :
 
 
 foo = MAKENULL()
-INSERT(1, foo)
-INSERT(2, foo)
-INSERT(3, foo)
-INSERT(4, foo)
+INSERT(1, 0, foo)
+INSERT(2, 0, foo)
+INSERT(3, 0, foo)
+INSERT(4, 0, foo)
 print "foo: "
 # should be 4 3 2 1
+printList(foo)
+
+
+INSERT(7, 3, foo)
+INSERT(8, 5, foo)
+print "foo: "
+# should be 4 3 2 7 1 8
 printList(foo)
 
 DELETE(1, foo)
@@ -154,5 +173,5 @@ foo = MAKENULL()
 printList(foo)
 
 print "adding 5 to foo"
-INSERT(5, foo)
+INSERT(5, 0, foo)
 printList(foo)
