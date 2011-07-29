@@ -23,10 +23,14 @@ def FIRST(lst) :
 
 # return last node in list
 def END(lst) :
-	temp = lst.head
-	while temp:	# may need change to while temp.nxt
-		temp = temp.nxt
-	return temp
+	# if empty
+	if lst.head is None and lst.cur is None:
+		return None
+	else :
+		temp = lst.head
+		while temp.nxt:	# may need change to while temp.nxt
+			temp = temp.nxt
+		return temp
 
 # find position of a specific value in the list
 def LOCATE(val, lst) :
@@ -79,25 +83,35 @@ def INSERT(val, pos, lst) :
 	n = Node()
 	# set it's 'cargo' field to the 'val' parameter
 	n.cargo = val
-	if pos == 0 :
+	if pos is None :
+		n.nxt = None
+		lst.head = n
+		lst.cur = lst.head
+		return
+	elif pos == FIRST(lst) and FIRST(lst) != END(lst):
+		print val,"position is FIRST"
 		# set n's 'nxt' field to the current list header
 		n.nxt = lst.head
 		# change the current header to the newly created node
 		lst.head = n
 		# change the current position to the new list head
 		lst.cur = lst.head
+		return
 	else :
-		p = FIRST(lst)
-		# move into position
-		# must shift one less than pos times
-		while p and pos > 1 :
-			p = p.nxt
-			pos -= 1
-		n.nxt = p.nxt
-		p.nxt = n
-		# reset lst to the new header
-		#lst = FIRST(p)
-	return
+	        n.nxt = None
+        
+	        if lst.head is None :
+	                lst.head = n
+	                lst.cur = n
+	        else :
+	                # copy lst
+	                tmp = lst.head
+	                while tmp.nxt: # parse through tmp till end
+	                        tmp = tmp.nxt
+	                tmp.nxt = n
+	                # copy tmp into lst
+	                lst = tmp 	        
+	        return
 
 def DELETE(pos, lst) :
 	temp = FIRST(lst)
