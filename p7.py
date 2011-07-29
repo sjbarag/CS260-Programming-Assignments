@@ -53,8 +53,8 @@ def RETREIVE(pos, lst) :
 	return temp.cargo
 
 # get next position in list
-def NEXT(lst) :
-	return (lst.cur).nxt
+def NEXT(n) :
+	return n.nxt
 	
 
 # convenience function to actually move to next position
@@ -144,20 +144,20 @@ def merge(lst1, lst2) :
 	while A and B :
 		if A.cargo <= B.cargo :
 			INSERT(A.cargo, END(out), out)
-			A = A.nxt
+			A = NEXT(A)
 		else :
 			INSERT(B.cargo, END(out), out)
-			B = B.nxt
+			B = NEXT(B)
 	
 	# a is longer
 	if A is not None and B is None :
 		while A :
 			INSERT(A.cargo, END(out), out)
-			A = A.nxt
+			A = NEXT(A)
 	elif B is not None and A is None :
 		while B :
 			INSERT(B.cargo, END(out), out)
-			B = B.nxt
+			B = NEXT(B)
 	return out
 	
 
@@ -166,7 +166,8 @@ foo = MAKENULL()
 bar = MAKENULL()
 for i in range(0, 10, 2) :
 	INSERT(i, END(foo), foo)
-	INSERT(i+5, END(bar), bar)
+for i in range(7, 13, 2) :
+	INSERT(i, END(bar), bar)
 printList(foo)
 printList(bar)
 foobar = merge(foo, bar)
