@@ -159,16 +159,36 @@ def merge(lst1, lst2) :
 			INSERT(B.cargo, END(out), out)
 			B = NEXT(B)
 	return out
+
+def mergen(*lst) :
+	if len(lst) == 0 :
+		return
+	elif len(lst) == 1 :
+		return lst[0]
+	else :
+		tmp = merge(lst[0], lst[1])
+		for i in range(2, len(lst)) :
+			tmp = merge(tmp, lst[i])
+		return tmp
 	
-
-
 foo = MAKENULL()
 bar = MAKENULL()
+baz = MAKENULL()
 for i in range(0, 10, 2) :
 	INSERT(i, END(foo), foo)
 for i in range(7, 13, 2) :
 	INSERT(i, END(bar), bar)
+for i in range(3,17,3) :
+	INSERT(i, END(baz), baz)
+
+print "foo: "
 printList(foo)
+print "bar: "
 printList(bar)
-foobar = merge(foo, bar)
-printList(foobar)
+print "baz: "
+printList(baz)
+
+print
+foobarbaz = mergen(foo, bar, baz)
+print "output: "
+printList(foobarbaz)
