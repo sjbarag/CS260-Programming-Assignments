@@ -10,13 +10,11 @@ class myList:
 	def __init__(self):
 		self.head = None
 		self.cur = None
-		
-
 
 # clear list
 #def MAKENULL() :
 #	temp = myList()
-	
+#	
 #	return temp
 
 # return head of list
@@ -25,10 +23,14 @@ def FIRST(lst) :
 
 # return last node in list
 def END(lst) :
-	temp = lst.head
-	while temp:	# may need change to while temp.nxt
-		temp = temp.nxt
-	return temp
+	# if empty
+	if lst.head is None and lst.cur is None:
+		return None
+	else :
+		temp = lst.head
+		while temp.nxt:	# may need change to while temp.nxt
+			temp = temp.nxt
+		return temp
 
 # find position of a specific value in the list
 def LOCATE(val, lst) :
@@ -42,7 +44,7 @@ def LOCATE(val, lst) :
 			temp = temp.nxt;
 	return -1
 
-# get node at specific position in list
+# get data at specific position in list
 def RETREIVE(pos, lst) :
 	temp = FIRST(lst)
 	for k in range(0, pos) :
@@ -51,16 +53,11 @@ def RETREIVE(pos, lst) :
 	return temp
 
 # get next position in list
-def NEXT(lst) :
-	return (lst.cur).nxt
+def NEXT(n) :
+	return n.nxt
+	
 
-
-# convenience function to actually move to next position
-def MOVENEXT(lst) :
-	lst.cur = NEXT(lst)
-	return
-
-# get previous position in list
+# get previous position from node
 def PREVIOUS(lst) :
 	temp = FIRST(lst)
 	while temp :
@@ -70,41 +67,55 @@ def PREVIOUS(lst) :
 			temp = temp.nxt
 	return None # no change if doesn't exist
 	
-# convenience function to actually move to next position
-def MOVEPREVIOUS(lst) :
-	lst.cur = PREVIOUS(lst)
-	return
-
-# tail insertion, returns nothing
-def INSERT(val, lst) :
-        # create new node with cargo 'val'
-        tail = Node()
-        # set it's 'cargo' field to the 'val' parameter
-        tail.cargo = val
-        # set it's 'nxt' field to None
-        tail.nxt = None
-        
-        if lst.head is None :
-                lst.head = tail
-                lst.cur = tail
-        else :
-                # copy lst
-                tmp = lst.head
-                while tmp.nxt: # parse through tmp till end
-                        tmp = tmp.nxt
-                tmp.nxt = tail
-                # copy tmp into lst
-                lst = tmp # if this doesn't work, do everyting within lst
-        
-        return
+# head insertion, returns new head
+def INSERT(val, pos, lst) :
+	# create new node with cargo 'val'
+	n = Node()
+	# set it's 'cargo' field to the 'val' parameter
+	n.cargo = val
+	if pos is None :
+		n.nxt = None
+		lst.head = n
+		lst.cur = lst.head
+		return
+	elif (pos == FIRST(lst) and FIRST(lst) != END(lst)) or (pos == 0):
+		# set n's 'nxt' field to the current list header
+		n.nxt = lst.head
+		# change the current header to the newly created node
+		lst.head = n
+		# change the current position to the new list head
+		lst.cur = lst.head
+		return
+	else :
+		if lst.head is None :
+			lst.head = n
+			lst.cur = n
+		else :
+			# copy lst
+			tmp = FIRST(lst)
+			while tmp and pos > 1 :
+				tmp = tmp.nxt
+				pos -= 1
+			n.nxt = tmp.nxt
+			tmp.nxt = n
+			# copy tmp into lst
+			#lst = tmp 	        
+		return
 
 def DELETE(pos, lst) :
 	temp = FIRST(lst)
 	# move to just before pos
 	if pos == 0 :
 		lst.head = temp.nxt
+	elif pos == END(lst) :
+		if temp.nxt == None :
+			lst = MAKENULL()
+		else :
+			while (temp.nxt).nxt :
+				temp = temp.nxt
+			temp.nxt = None
 	else :
-		while pos-1 > 0 :
+		while pos - 1 > 0 :
 			temp = temp.nxt
 			pos -= 1
 		first = temp
@@ -137,7 +148,7 @@ def LEFTMOST_CHILD(n, T) :
 	for i in range(len(T.cellspace)) :
 		if T.cellspace[i] is not None :
 			if FIRST(T.cellspace[i]) == n :
-				return FIRST(T.cellspace[i]).nxt
+				return NEXT(FIRST(T.cellspace[i]))
 	return None
 			
 #	if n in T.cellspace :
@@ -173,11 +184,10 @@ def RIGHT_SIBLING(n, T) :
 		if T.cellspace[i] is not None :
 			p = LOCATE(n.cargo, T.cellspace[i])
 			if p != -1 and p != 0:
-				return RETREIVE(p, T.cellspace[i]).nxt
+				return NEXT(RETREIVE(p, T.cellspace[i]))
 	return None
 					
-# returns root node of a tree, or
-# None if the tree is null.
+# returns root node of a tree
 # @param T	tree in question
 def ROOT(T) :
 	return FIRST(T.cellspace[T.root])
@@ -203,7 +213,7 @@ def CREATE0(v) :
 	n.cellspace[v] = myList()
 	n.root = v
 	# insert v into the list
-	INSERT(v, n.cellspace[v])
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
 	return n
 	
 # returns a tree with root node labeled v and children subtree T
@@ -217,9 +227,9 @@ def CREATE1(v, T) :
 	n.cellspace[v] = myList()
 	n.root = v
 
-	# insertions
-	INSERT(v, n.cellspace[v])
-	INSERT(T.root, n.cellspace[v])
+	# child insertions
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T.root, END(n.cellspace[v]), n.cellspace[v])
 
 	return n
 	
@@ -240,9 +250,9 @@ def CREATE2(v, T1, T2) :
 	n.root = v
 
 	# insertions
-	INSERT(v, n.cellspace[v])
-	INSERT(T1.root, n.cellspace[v])
-	INSERT(T2.root, n.cellspace[v])
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
 
 	return n
 	
@@ -266,10 +276,10 @@ def CREATE3(v, T1, T2, T3) :
 	n.root = v
 	
 	# insertions
-	INSERT(v, n.cellspace[v])
-	INSERT(T1.root, n.cellspace[v])
-	INSERT(T2.root, n.cellspace[v])
-	INSERT(T3.root, n.cellspace[v])
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T3.root, END(n.cellspace[v]), n.cellspace[v])
 	
 	return n
 
@@ -284,27 +294,45 @@ def printTree(T) :
 	
 
 MAXNODES = 100
-herp = CREATE0(1)
-derp = CREATE0(2)
-herpderp = CREATE2(5, herp, derp)
-derpina = CREATE0(3)
-foo = CREATE1(6, derpina)
-bar = CREATE0(9)
-final = CREATE3(10, foo, bar, herpderp)
+#### A..N replaced by integers 1..14 for simplicity.
+M = CREATE0(13)
+N = CREATE0(14)
+I = CREATE2(9, M, N)
 
-print "tree 'final' as a list of of children."
+D = CREATE0(4)
+E = CREATE1(5, I)
+F = CREATE0(6)
+
+J = CREATE0(10)
+K = CREATE0(11)
+G = CREATE2(7, J, K)
+
+L = CREATE0(12)
+H = CREATE1(8, L)
+
+B = CREATE2(2, D, E)
+
+F = CREATE0(6)
+C = CREATE3(3, F, G, H)
+
+A = CREATE2(1, B, C)
+
+print "tree 'A' as a list of of children."
 print "[index : data]"
-printTree(final)
+printTree(A)
 print
 
-n = ROOT(final)
+n = ROOT(A)
 print "root node: ", n
 
-n = LEFTMOST_CHILD(n, final)
+n = LEFTMOST_CHILD(n, A)
 print "move to leftmost child: ", n
 
-n = RIGHT_SIBLING(n, final)
+n = LEFTMOST_CHILD(n, A)
+print "move to next leftmostchild: ", n
+
+n = RIGHT_SIBLING(n, A)
 print "move to right sibling: ", n
 
-n = PARENT(n, final)
+n = PARENT(n, A)
 print "move to parent: ", n

@@ -1,4 +1,3 @@
-
 # Leftmost Child/Right Sibling implementation of Trees
 
 # Node class - each object of class node is a node a tree

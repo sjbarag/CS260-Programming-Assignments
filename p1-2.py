@@ -57,10 +57,6 @@ def NEXT(n) :
 	return n.nxt
 	
 
-# convenience function to actually move to next position
-def MOVENEXT(lst) :
-	lst.cur = NEXT(lst)
-	return
 
 # get previous position from node
 def PREVIOUS(lst) :
@@ -72,11 +68,6 @@ def PREVIOUS(lst) :
 			temp = temp.nxt
 	return None # no change if doesn't exist
 	
-# convenience function to actually move to next position
-def MOVEPREVIOUS(lst) :
-	lst.cur = PREVIOUS(lst)
-	return
-
 # head insertion, returns new head
 def INSERT(val, pos, lst) :
 	# create new node with cargo 'val'
