@@ -342,7 +342,11 @@ def buildTree(v, i) :
 	else :
 		return CREATE3(v, buildTree((3*i)-1, i-1), buildTree(3*i, i-1), buildTree((3*i)+1, i-1))
 
+def derp() :
+	buildTree(0, n)
+
 MAXNODES = 500
+NUMREPS = 1000
 
 foo = buildTree(0, 2)
 
@@ -350,6 +354,6 @@ for n in range(0, 5) :
 	print "----- n = ", n, " -----"
 
 	
-	t = Timer("build(v, i)", "from __main__ import assignment; v=%r" % (0, n))
-	buildtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
-	print buildtime
+	t = Timer("derp()", "from __main__ import derp")
+	buildtime = t.timeit(NUMREPS)/(NUMREPS) # NUMREPS executions * n ops
+	print "Time to build tree of size", n, ": ", buildtime
