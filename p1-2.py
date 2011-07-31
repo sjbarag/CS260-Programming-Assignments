@@ -53,8 +53,8 @@ def RETREIVE(pos, lst) :
 	return temp.cargo
 
 # get next position in list
-def NEXT(lst) :
-	return (lst.cur).nxt
+def NEXT(n) :
+	return n.nxt
 	
 
 # convenience function to actually move to next position
@@ -62,7 +62,7 @@ def MOVENEXT(lst) :
 	lst.cur = NEXT(lst)
 	return
 
-# get previous position in list
+# get previous position from node
 def PREVIOUS(lst) :
 	temp = FIRST(lst)
 	while temp :
@@ -88,8 +88,7 @@ def INSERT(val, pos, lst) :
 		lst.head = n
 		lst.cur = lst.head
 		return
-	elif pos == FIRST(lst) and FIRST(lst) != END(lst):
-		print val,"position is FIRST"
+	elif (pos == FIRST(lst) and FIRST(lst) != END(lst)) or (pos == 0):
 		# set n's 'nxt' field to the current list header
 		n.nxt = lst.head
 		# change the current header to the newly created node
@@ -98,28 +97,35 @@ def INSERT(val, pos, lst) :
 		lst.cur = lst.head
 		return
 	else :
-	        n.nxt = None
-        
-	        if lst.head is None :
-	                lst.head = n
-	                lst.cur = n
-	        else :
-	                # copy lst
-	                tmp = lst.head
-	                while tmp.nxt: # parse through tmp till end
-	                        tmp = tmp.nxt
-	                tmp.nxt = n
-	                # copy tmp into lst
-	                lst = tmp 	        
-	        return
+		if lst.head is None :
+			lst.head = n
+			lst.cur = n
+		else :
+			# copy lst
+			tmp = FIRST(lst)
+			while tmp and pos > 1 :
+				tmp = tmp.nxt
+				pos -= 1
+			n.nxt = tmp.nxt
+			tmp.nxt = n
+			# copy tmp into lst
+			#lst = tmp 	        
+		return
 
 def DELETE(pos, lst) :
 	temp = FIRST(lst)
 	# move to just before pos
 	if pos == 0 :
 		lst.head = temp.nxt
+	elif pos == END(lst) :
+		if temp.nxt == None :
+			lst = MAKENULL()
+		else :
+			while (temp.nxt).nxt :
+				temp = temp.nxt
+			temp.nxt = None
 	else :
-		while pos-1 > 0 :
+		while pos - 1 > 0 :
 			temp = temp.nxt
 			pos -= 1
 		first = temp
@@ -157,6 +163,9 @@ printList(foo)
 DELETE(1, foo)
 print "deleted position 1"
 #should be 4 2 1
+printList(foo)
+
+DELETE(END(foo), foo)
 printList(foo)
 
 print "moving to next position"

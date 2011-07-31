@@ -1,32 +1,27 @@
 from timeit import Timer
 
 # head insertion
-# @param lst	list into which values are inserted
 def inshead() :
 	lst = [0]*n
 	lst.insert(0, 5)
 
 # tail insertion
-# @param lst	list into which values are inserted
 def instail() :
 	lst = [0]*n
 	lst.append(5)
 	
 # list traversal
-# @param lst	list in question
 def trav() :
 	lst = [0]*n
 	for i in range(len(lst)) :
 		x = lst[i]
 
 # head deletion
-# @param lst	list in question
 def delhead() :
 	lst = [0]*n
 	del lst[0]
 
 # tail deletion
-# @param lst	list in question
 def deltail() :
 	lst = [0]*n
 	del lst[-1]
@@ -36,6 +31,7 @@ def assignment() :
 	lst = [0]*n
 
 NUMREPS = 10000
+# er.... change to range(1, 4)
 for i in range(1, 5) :
 	n = 10**i
 
