@@ -1,25 +1,48 @@
-[sean@leonardo pa1]$ python p5-1.py 
 # Python's list
+[sean@leonardo pa1]$ python p5-1.py 
 ----- n =  10  -----
-Time per head insertion:        4.76098060608e-07
-Time per tail insertion:        2.62427330017e-07
-Time per traversal:             1.25432014465e-06
-Time per head deletion:         1.08695030212e-07
-Time per tail deletion:         1.0552406311e-07
+Time per head insertion:        3.8675069809e-07
+Time per tail insertion:        2.23541259766e-07
+Time per traversal:             1.21829509735e-07
+Time per head deletion:         2.2509098053e-07
+Time per tail deletion:         1.82311534882e-07
 
 ----- n =  100  -----
-Time per head insertion:        5.07783889771e-07
-Time per tail insertion:        2.01177597046e-07
-Time per traversal:             7.05268383026e-06
-Time per head deletion:         2.17986106873e-07
-Time per tail deletion:         1.86991691589e-07
+Time per head insertion:        4.09579992294e-07
+Time per tail insertion:        1.39633893967e-07
+Time per traversal:             6.79757595062e-08
+Time per head deletion:         1.59172058105e-07
+Time per tail deletion:         1.24541044235e-07
 
 ----- n =  1000  -----
-Time per head insertion:        1.29866600037e-06
-Time per tail insertion:        2.50506401062e-07
-Time per traversal:             6.45415782928e-05
-Time per head deletion:         6.27589225769e-07
-Time per tail deletion:         2.15291976929e-07
+Time per head insertion:        1.57615249157e-06
+Time per tail insertion:        1.33157205582e-07
+Time per traversal:             6.43293857574e-08
+Time per head deletion:         3.43395495415e-07
+Time per tail deletion:         1.16172075272e-07
+
+[sean@leonardo pa1]$ python p5-2.py 
+# custom array list
+----- n =  10  -----
+Time per head insertion:        1.70302391052e-06
+Time per tail insertion:        1.50012969971e-06
+Time per traversal:             1.37186050415e-06
+Time per head deletion:         2.55513191223e-06
+Time per tail deletion:         2.08711624146e-06
+
+----- n =  100  -----
+Time per head insertion:        2.8392791748e-06
+Time per tail insertion:        1.8002986908e-06
+Time per traversal:             1.77519321442e-06
+Time per head deletion:         3.46050262451e-06
+Time per tail deletion:         2.42550373077e-06
+
+----- n =  1000  -----
+Time per head insertion:        1.4228348732e-05
+Time per tail insertion:        7.47437953949e-06
+Time per traversal:             6.83897018433e-06
+Time per head deletion:         1.34451985359e-05
+Time per tail deletion:         7.4178314209e-06
 
 
 [sean@leonardo pa1]$ python p5-2.py 

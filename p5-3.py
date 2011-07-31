@@ -191,33 +191,34 @@ def assignment() :
 	lst = MAKENULL()
 
 NUMREPS = 100
-# er.... change to range(1, 4)
-for i in range(1, 5) :
+# It's reeaaaaallly slow if I do range(1, 5) - I left it running for several
+# minutes on a reasonably modern machine and it still hadn't finished.
+for i in range(1, 4) :
 	n = 10**i
 
 	print "----- n = ", n, " -----"
 
 	t = Timer("assignment()", "from __main__ import assignment")
-	asgntime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions
+	asgntime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
 	
 	t = Timer("inshead()", "from __main__ import inshead")
-	insheadtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions
+	insheadtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
 	print "Time per head insertion: \t", insheadtime-asgntime
 	
 	t = Timer("instail()", "from __main__ import instail")
-	instailtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions
+	instailtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
 	print "Time per tail insertion: \t", instailtime-asgntime
 
 	t = Timer("trav()", "from __main__ import trav")
-	travtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions
+	travtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
 	print "Time per traversal:      \t", travtime-insheadtime
 
 	t = Timer("delhead()", "from __main__ import delhead")
-	delheadtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions
+	delheadtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
 	print "Time per head deletion: \t", delheadtime-insheadtime
 	
 	t = Timer("deltail()", "from __main__ import deltail")
-	deltailtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions
+	deltailtime = t.timeit(NUMREPS)/(NUMREPS*n) # NUMREPS executions * n ops
 	print "Time per tail deletion: \t", deltailtime-insheadtime
 	print
 	
