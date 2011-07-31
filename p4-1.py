@@ -147,17 +147,9 @@ def LEFTMOST_CHILD(n, T) :
 	# any node's leftmost child is the first element pointed to by the node
 	for i in range(len(T.cellspace)) :
 		if T.cellspace[i] is not None :
-			if FIRST(T.cellspace[i]) == n :
+			if LABEL( FIRST(T.cellspace[i]) ) == LABEL(n) :
 				return NEXT(FIRST(T.cellspace[i]))
 	return None
-			
-#	if n in T.cellspace :
-#		tmp = FIRST(T.cellspace[T.cellspace.index(n)])
-#		print tmp
-#		return NEXT(tmp)
-#	else :
-#		# n doesn't exist
-#		return None
 
 # return a node's parent, or None if it is the root
 # @param n	node in question
@@ -251,8 +243,8 @@ def CREATE2(v, T1, T2) :
 
 	# insertions
 	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
-	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
 	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
 
 	return n
 	
@@ -277,9 +269,9 @@ def CREATE3(v, T1, T2, T3) :
 	
 	# insertions
 	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
-	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
-	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
 	INSERT(T3.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
 	
 	return n
 
