@@ -1,0 +1,47 @@
+[sean@leonardo pa1]$ python p5-1.py 
+# Python's list
+----- n =  10  -----
+Time per head insertion:        4.76098060608e-07
+Time per tail insertion:        2.62427330017e-07
+Time per traversal:             1.25432014465e-06
+Time per head deletion:         1.08695030212e-07
+Time per tail deletion:         1.0552406311e-07
+
+----- n =  100  -----
+Time per head insertion:        5.07783889771e-07
+Time per tail insertion:        2.01177597046e-07
+Time per traversal:             7.05268383026e-06
+Time per head deletion:         2.17986106873e-07
+Time per tail deletion:         1.86991691589e-07
+
+----- n =  1000  -----
+Time per head insertion:        1.29866600037e-06
+Time per tail insertion:        2.50506401062e-07
+Time per traversal:             6.45415782928e-05
+Time per head deletion:         6.27589225769e-07
+Time per tail deletion:         2.15291976929e-07
+
+
+[sean@leonardo pa1]$ python p5-2.py 
+# custom linked list
+----- n =  10  -----
+Time per head insertion:        3.81684303284e-06
+Time per tail insertion:        1.61468982697e-05
+Time per traversal:             1.66535377502e-06
+Time per head deletion:         9.76085662842e-07
+Time per tail deletion:         2.67963409424e-05
+
+----- n =  100  -----
+Time per head insertion:        3.75638008118e-06
+Time per tail insertion:        7.96024084091e-05
+Time per traversal:             1.74462795258e-06
+Time per head deletion:         7.41624832153e-07
+Time per tail deletion:         0.000217533326149
+
+----- n =  1000  -----
+Time per head insertion:        4.16741132736e-06
+Time per tail insertion:        0.000716286480427
+Time per traversal:             1.71957969666e-06
+Time per head deletion:         4.87339496613e-07
+Time per tail deletion:         0.00215926691771
+
