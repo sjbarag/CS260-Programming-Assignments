@@ -345,32 +345,33 @@ def buildTree(v, i) :
 def herp() :
 	gTree = buildTree(0, n)
 
-
 def traverse(n, T) :
-	if n.lc is None :
+	if LEFTMOST_CHILD(n, T) is None :
 		return
 	else :
-		printTree(T.cellspace[n.lc], T)
+		traverse(LEFTMOST_CHILD(n, T), T)
 		tmp = LEFTMOST_CHILD(n,T)
 		tmp = RIGHT_SIBLING(tmp, T)
 		while tmp is not None :
+			traverse(tmp, T)
 			tmp = RIGHT_SIBLING(tmp, T)
-		return
 
 def derp() :
+	gTree = buildTree(0, n)
 	traverse(ROOT(gTree), gTree)
 
 MAXNODES = 500
 NUMREPS = 1000
 
-gTree = [None]
+gTree = tree()
 
 for n in range(0, 5) :
 	print "----- n = ", n, " -----"
-	
+
 	t = Timer("herp()", "from __main__ import herp")
 	buildtime = t.timeit(NUMREPS)/(NUMREPS) # NUMREPS executions
 	print "Time to build tree of size", n, ": ", buildtime
+
 
 	t = Timer("derp()", "from __main__ import derp")
 	travtime = t.timeit(NUMREPS)/(NUMREPS) # NUMREPS executions

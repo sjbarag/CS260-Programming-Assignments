@@ -1,0 +1,36 @@
+# list of children tree
+[sean@leonardo pa1]$ python p6-1.py 
+----- n =  0  -----
+Time to build tree of size 0 :  7.69305229187e-06
+Time to traverse tree of size 0 :  9.35196876526e-06
+----- n =  1  -----
+Time to build tree of size 1 :  0.00022584104538
+Time to traverse tree of size 1 :  0.000107709884644
+----- n =  2  -----
+Time to build tree of size 2 :  0.000886947870255
+Time to traverse tree of size 2 :  0.000566353082657
+----- n =  3  -----
+Time to build tree of size 3 :  0.00284615707397
+Time to traverse tree of size 3 :  0.00210853886604
+----- n =  4  -----
+Time to build tree of size 4 :  0.00910177302361
+Time to traverse tree of size 4 :  0.0068464140892
+
+
+# left mostchild/right sibling tree
+[sean@leonardo pa1]$ python p6-2.py 
+----- n =  0  -----
+Time to build tree of size 0 :  6.04200363159e-06
+Time to traverse tree of size 0 :  1.17588043213e-06
+----- n =  1  -----
+Time to build tree of size 1 :  0.000179639101028
+Time to traverse tree of size 1 :  4.5177936554e-06
+----- n =  2  -----
+Time to build tree of size 2 :  0.000698412179947
+Time to traverse tree of size 2 :  1.66819095612e-05
+----- n =  3  -----
+Time to build tree of size 3 :  0.00226740598679
+Time to traverse tree of size 3 :  3.70099544525e-05
+----- n =  4  -----
+Time to build tree of size 4 :  0.00692946386337
+Time to traverse tree of size 4 :  0.000340231180191
