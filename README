@@ -3,34 +3,67 @@ MEMBERS
 
 CONTENTS
 	p1-1.py
-		Problem 1: Lists with arrays
+		Problem 1: 	Lists with arrays
 	p1-2.py
-		Problem 1: Lists with pointers
+		Problem 1: 	Lists with pointers
 	p2-1.py	
-		Problem 2: Stacks with arrays
+		Problem 2: 	Stacks with arrays
 	p2-2.py
-		Problem 2: Stacks with pointers
+		Problem 2: 	Stacks with pointers
 	p3.py
-		Problem 3: Queues
+		Problem 3: 	Queues
 	p4-1.py
-		Problem 4: Trees with a list of children
+		Problem 4: 	Trees with a list of children
 	p4-2.py
-		Problem 4: Trees with leftmost-child/right-sibling
+		Problem 4: 	Trees with leftmost-child/right-sibling
 
 	p5-1.py
-		Problem 5: Timing for Python's list class
+		Problem 5: 	Timing for Python's list class
 	p5-2.py
-		Problem 5: Timing for my array-based list ADT
+		Problem 5: 	Timing for my array-based list ADT
 	p5-3.py
-		PRoblem 5: Timing for my pointer-based list ADT
+		PRoblem 5: 	Timing for my pointer-based list ADT
 	p6-1.py
-		Problem 6: Timing for trees with a list of children
+		Problem 6: 	Timing for trees with a list of children
 	p6-2.py
-		Problem 6: Timing for trees with leftmost-child/right-sibling
+		Problem 6: 	Timing for trees with leftmost-child/right-sibling
 
 	p7.py
-		Problem 7: Merge of n lists
+		Problem 7: 	Merge of n lists
 	p8.py
-		Problem 8: Concatenation of a list of lists
+		Problem 8: 	Concatenation of a list of lists
 	p9-1.py
-		Problem 9: Height
+		Problem 9: 	Height of trees with a list of children
+	p9-2.py
+		Problem 9: 	Height of trees with leftmost-child/right-sibling
+	p10.py
+		Problem 10:	Level printing of a tree
+	p11.py
+		Problem 11:	Pre/in/post order conversions
+	p12.py
+		Problem 12:	Pre/post-fix expression evaluation
+
+COMPLETE
+	All problems! [1-12]
+
+NOT COMPLETE
+	TODO: The reports!
+
+UNFINISHED
+	Nothing
+
+COMPILATION & EXECUTION
+	For all:
+		make
+	For individual questions:
+		make q{1..12}
+	If the .py files do need execution permissions on your system:
+		make permissions
+	This option exists so that you don't automatically have to elevate the
+	permissions for these files (even though they only elevate for you).
+
+TEST CASES
+	TODO
+
+PROGRAM OUTPUT
+	TODO
