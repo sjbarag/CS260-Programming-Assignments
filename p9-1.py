@@ -1,224 +1,287 @@
-# Leftmost Child/Right Sibling implementation of Trees
-
-# Node class - each object of class node is a node a tree
-# @param label 	label of the node (1, 2, 3, ...)
-# @param lc 	left child of the node
-# @param rs 	right sibling of the node
-# @param parent	the node's parent
-class node :
-	# constructor
-	def __init__(self) :
-		self.label = None
-		self.lc = None
-		self.rs = None
-		self.parent = None
+class Node:
+	def __init__(self):
+		self.cargo = None
+		self.nxt = None
 	
-	# for easier printing
 	def __str__(self):
-                return str(self.label)
+		return str(self.cargo) 	
 
-# Tree class
-# @param cellspace	list of objects of type node
-# @param end		integer representation of one-past-last *used* object in list
-# @param root		the root node of the tree.
-class tree :
+class myList:
+	def __init__(self):
+		self.head = None
+		self.cur = None
 
-	# constructor.  Creates only null trees.
-	def __init__(self) :
+# clear list
+#def MAKENULL() :
+#	temp = myList()
+#	
+#	return temp
+
+# return head of list
+def FIRST(lst) :
+	return lst.head
+
+# return last node in list
+def END(lst) :
+	# if empty
+	if lst.head is None and lst.cur is None:
+		return None
+	else :
+		temp = lst.head
+		while temp.nxt:	# may need change to while temp.nxt
+			temp = temp.nxt
+		return temp
+
+# find position of a specific value in the list
+def LOCATE(val, lst) :
+	count = 0
+	temp = FIRST(lst)
+	while temp :
+		if temp.cargo == val :
+			return count
+		else :
+			count += 1
+			temp = temp.nxt;
+	return -1
+
+# get data at specific position in list
+def RETREIVE(pos, lst) :
+	temp = FIRST(lst)
+	for k in range(0, pos) :
+		if temp.nxt != None :
+			temp = temp.nxt
+	return temp
+
+# get next position in list
+def NEXT(n) :
+	return n.nxt
+	
+
+# get previous position from node
+def PREVIOUS(lst) :
+	temp = FIRST(lst)
+	while temp :
+		if temp.nxt == lst.cur :
+			return temp
+		else :
+			temp = temp.nxt
+	return None # no change if doesn't exist
+	
+# head insertion, returns new head
+def INSERT(val, pos, lst) :
+	# create new node with cargo 'val'
+	n = Node()
+	# set it's 'cargo' field to the 'val' parameter
+	n.cargo = val
+	if pos is None :
+		n.nxt = None
+		lst.head = n
+		lst.cur = lst.head
+		return
+	elif (pos == FIRST(lst) and FIRST(lst) != END(lst)) or (pos == 0):
+		# set n's 'nxt' field to the current list header
+		n.nxt = lst.head
+		# change the current header to the newly created node
+		lst.head = n
+		# change the current position to the new list head
+		lst.cur = lst.head
+		return
+	else :
+		if lst.head is None :
+			lst.head = n
+			lst.cur = n
+		else :
+			# copy lst
+			tmp = FIRST(lst)
+			while tmp and pos > 1 :
+				tmp = tmp.nxt
+				pos -= 1
+			n.nxt = tmp.nxt
+			tmp.nxt = n
+			# copy tmp into lst
+			#lst = tmp 	        
+		return
+
+def DELETE(pos, lst) :
+	temp = FIRST(lst)
+	# move to just before pos
+	if pos == 0 :
+		lst.head = temp.nxt
+	elif pos == END(lst) :
+		if temp.nxt == None :
+			lst = MAKENULL()
+		else :
+			while (temp.nxt).nxt :
+				temp = temp.nxt
+			temp.nxt = None
+	else :
+		while pos - 1 > 0 :
+			temp = temp.nxt
+			pos -= 1
+		first = temp
+		second = temp.nxt
+		first.nxt = second.nxt
+	lst.cur = lst.head
+
+def printList(lst) :
+	temp = FIRST(lst)
+	if temp is None :
+		print "empty",
+	else :
+		while temp :
+			print temp,
+			temp = temp.nxt
+	print
+	
+################################################################################
+
+class tree:
+	def __init__(self):
 		self.cellspace = None
 		self.root = None
 
-# returns a null (empty) tree.
+# return a node's leftmost child, or None if it is an end node
+# @param n	node in question
+# @param T	source tree containing n
+def LEFTMOST_CHILD(n, T) :
+	# any node's leftmost child is the first element pointed to by the node
+	for i in range(len(T.cellspace)) :
+		if T.cellspace[i] is not None :
+			if LABEL( FIRST(T.cellspace[i]) ) == LABEL(n) :
+				return NEXT(FIRST(T.cellspace[i]))
+	return None
+
+# return a node's parent, or None if it is the root
+# @param n	node in question
+# @param T	source tree containing n
+def PARENT(n, T) :
+	if n == T.cellspace[T.root] :
+		return None
+	else :
+		# parse through cellspace, test if each element contains n
+		for i in range(0, len(T.cellspace)) :
+			if T.cellspace[i] is not None :
+				p = LOCATE(n.cargo, T.cellspace[i])
+				if p != -1 and p!=0:
+					return FIRST(T.cellspace[i])
+		return None
+			
+# returns the right sibling of a node, 
+# None if it is the rightmost node,
+# or None if the value isn't found
+# @param n	node in question
+# @param T	source tree containing n
+def RIGHT_SIBLING(n, T) :
+	for i in range(0, len(T.cellspace)) :
+		if T.cellspace[i] is not None :
+			p = LOCATE(n.cargo, T.cellspace[i])
+			if p != -1 and p != 0:
+				return NEXT(RETREIVE(p, T.cellspace[i]))
+	return None
+					
+# returns root node of a tree
+# @param T	tree in question
+def ROOT(T) :
+	return FIRST(T.cellspace[T.root])
+
+# creates and returns an empty tree
 def MAKENULL() :
 	temp = tree()
-	temp.cellspace = [None]*MAXNODES
+	temp.cellspace=[None]*MAXNODES
+
 	return temp
 
-# returns the parent of a node
+# gets data at a node
 # @param n	node in question
-def PARENT(n, T) : 
-	return T.cellspace[n.parent]
-
-# returns the leftmost child of a node
-# @param n 	node in question
-def LEFTMOST_CHILD(n, T) :
-	if n.lc is None :
-		return None
-	else :
-		return T.cellspace[n.lc]
-	print n, "does not exist in the tree."
-
-# returns the right sibling of a node
-# @param n 	node in question
-def RIGHT_SIBLING(n, T):
-	if n.rs is None :
-		return None
-	else :
-		return T.cellspace[n.rs]
-	print n, "does not exist in the tree."
-		
-# returns the label of a node
-# @param n 	node in question
 def LABEL(n) :
-	return n.label
+	return n.cargo
 
 # returns a tree with root/leaf node v.  ...that's it.
-# @param v	label of the root/leaf node
+# @param v      label of the root/leaf node
 def CREATE0(v) :
-	# make new, empty tree
-	temp = MAKENULL()
-
-	#set root's values
-	temp.cellspace[v] = node()
-	temp.cellspace[v].label = v
+	# create null tree
+	n = MAKENULL()
+	# initialize tree as a list
+	n.cellspace[v] = myList()
+	n.root = v
+	# insert v into the list
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	return n
 	
-	# root is v
-	temp.root = v
-	return temp
-	
-# returns a tree with root node labeled v and child subtree T
-# @param v	label of the new root node (it better be an integer, or things will break badly)
-# @param T	subtree to the be leftmost (er... only) chlid of the new root
+# returns a tree with root node labeled v and children subtree T
+# @param v      label of the new root node (it better be an integer, or things will break badly)
+# @param T     subtree to be the leftmost child of the new root
 def CREATE1(v, T) :
-	# make new, empty tree
-	temp = MAKENULL()
-	
-	# copy T's cellspace
-	for i in range(0, MAXNODES) :
+	n = MAKENULL()
+	for i in range(0, len(T.cellspace)) :
 		if T.cellspace[i] is not None :
-			temp.cellspace[i] = T.cellspace[i]
-	# set new root
-	temp.cellspace[v] = node()
-	temp.cellspace[T.root] = node()
+			n.cellspace[i] = T.cellspace[i]
+	n.cellspace[v] = myList()
+	n.root = v
 
-	# set root's values
-	temp.cellspace[v].label = v
-	temp.cellspace[v].lc = T.root
-	temp.rs = None	# not needed, but good for explicitacity.
+	# child insertions
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T.root, END(n.cellspace[v]), n.cellspace[v])
+
+	return n
 	
-	# set T's values
-	temp.cellspace[T.root].label = T.root
-	temp.cellspace[T.root].rs = None	# explicit
-	temp.cellspace[T.root].parent = v
-	
-	# root is v
-	temp.root = v
-
-	return temp
-
 # returns a tree with root node labeled v and children subtrees T1 and T2
-# @param v	label of the new root node (it better be an integer, or things will break badly)
-# @param T1	subtree to be the leftmost child of the new root
-# @param T2	subtree to be the rightmost child of the new root
+# @param v      label of the new root node (it better be an integer, or things will break badly)
+# @param T1     subtree to be the leftmost child of the new root
+# @param T2     subtree to be the rightmost child of the new root
 def CREATE2(v, T1, T2) :
-	# make new, empty tree
-	temp = MAKENULL()
+	n = MAKENULL()
 
-	# copy T1's cellspace
-	#temp.cellspace = T1.cellspace
-	# merge in T2's cellspace
-	for i in range(0, MAXNODES) :
+	# copy T1 and T2's cellspaces into n's
+	for i in range(0, len(T1.cellspace)) :
 		if T1.cellspace[i] is not None :
-			temp.cellspace[i] = T1.cellspace[i]
+			n.cellspace[i] = T1.cellspace[i]
 		elif T2.cellspace[i] is not None :
-			temp.cellspace[i] = T2.cellspace[i]
-			
-	# set new roots
-	temp.cellspace[v] = node()
-	temp.cellspace[T1.root] = node()
-	temp.cellspace[T2.root] = node()
-	
-	# set root's values
-	temp.cellspace[v].label = v
-	temp.cellspace[v].lc = T1.root
-	temp.cellspace[v].rs = None	# being explicit
-	
-	# set T1's cell's attributes
-	temp.cellspace[T1.root] = T1.cellspace[T1.root]
-	temp.cellspace[T1.root].rs = T2.root
-	temp.cellspace[T1.root].parent = v
+			n.cellspace[i] = T2.cellspace[i]
+	n.cellspace[v] = myList()
+	n.root = v
 
-	# set T2's cell's attributes
-	temp.cellspace[T2.root] = T2.cellspace[T2.root]
-	temp.cellspace[T2.root].rs = None
-	temp.cellspace[T2.root].parent = v
-	
-	# root is v
-	temp.root = v
+	# insertions
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
 
-	return temp
+	return n
 	
 # returns a tree with root node labeled v and children subtrees T1, T2, and T3
-# @param v	label of the new root node (it better be an integer, or things will break badly)
-# @param T1	subtree to be the leftmost child of the new root
-# @param T2	subtree to be to the right of T1
-# @param T3	subtree to be to the right of T2
+# @param v      label of the new root node (it better be an integer, or things will break badly)
+# @param T1     subtree to be the leftmost child of the new root
+# @param T2     subtree to be to the right of T1
+# @param T3     subtree to be to the right of T2
 def CREATE3(v, T1, T2, T3) :
-	# make new, empty tree
-	temp = MAKENULL()
+	n = MAKENULL()
 	
-	for i in range(0, MAXNODES) :
+	# copy T1, T2, and T3's cellspaces into n's
+	for i in range(0, len(T1.cellspace)) :
 		if T1.cellspace[i] is not None :
-			temp.cellspace[i] = T1.cellspace[i]
+			n.cellspace[i] = T1.cellspace[i]
 		elif T2.cellspace[i] is not None :
-			temp.cellspace[i] = T2.cellspace[i]
+			n.cellspace[i] = T2.cellspace[i]
 		elif T3.cellspace[i] is not None :
-			temp.cellspace[i] = T3.cellspace[i]
+			n.cellspace[i] = T3.cellspace[i]
+	n.cellspace[v] = myList()
+	n.root = v
 	
-	# set new roots
-	temp.cellspace[v] = node()
-	temp.cellspace[T1.root] = node()
-	temp.cellspace[T2.root] = node()
-	temp.cellspace[T3.root] = node()
+	# insertions
+	INSERT(v, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T3.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T2.root, END(n.cellspace[v]), n.cellspace[v])
+	INSERT(T1.root, END(n.cellspace[v]), n.cellspace[v])
 	
-	# set root's values
-	temp.cellspace[v].label = v
-	temp.cellspace[v].lc = T1.root
-	temp.cellspace[v].rs = None	# being explicit
-	
-	# set T1's cell's attributes
-	temp.cellspace[T1.root] = T1.cellspace[T1.root]
-	temp.cellspace[T1.root].rs = T2.root
-	temp.cellspace[T1.root].parent = v
+	return n
 
-	# set T2's cell's attributes
-	temp.cellspace[T2.root] = T2.cellspace[T2.root]
-	temp.cellspace[T2.root].rs = T3.root
-	temp.cellspace[T2.root].parent = v
-	
-	# set T3's cell's attributes
-	temp.cellspace[T3.root] = T3.cellspace[T3.root]
-	temp.cellspace[T3.root].rs = None
-	temp.cellspace[T3.root].parent = v
-	
-	# root is v
-	temp.root = v
-
-	return temp
-
-
-
-
-# returns the root of tree T
-# @param T	the tree in question
-def ROOT(T) :
-	return T.cellspace[T.root]
-
-# prints contents of tree t containing root r [inorder].  There is probably a
-# 	way to put this in tree class's __str__ function, I just haven't done it yet.
-# 	String concatentation, most likely.
-# @param r	the root of the tree in question
-def printTree(n, T) :
-	if n.lc is None :
-		print n,
-	else :
-		printTree(T.cellspace[n.lc], T)
-		print n,
-		tmp = LEFTMOST_CHILD(n,T)
-		tmp = RIGHT_SIBLING(tmp, T)
-		while tmp is not None :
-			printTree(tmp, T)
-			tmp = RIGHT_SIBLING(tmp, T)
+# prints a tree.  Tadah!
+# @param T	tree in question
+def printTree(T) :
+	for i in range(0, len(T.cellspace)) :
+		if T.cellspace[i] is not None :
+			print i,":",
+			printList(T.cellspace[i])
 
 #########################################################
 
@@ -227,7 +290,7 @@ def printTree(n, T) :
 # @param T	tree containing n
 def height(n, T, m, i) :
 	if LEFTMOST_CHILD(n, T) is None :
-		return i+1		# no idea why this must be different than p9-2.py :)
+		return i
 	else :
 		tmp = LEFTMOST_CHILD(n, T)
 		# for each other sibling, makelevels
@@ -269,3 +332,4 @@ A = CREATE2(1, B, C)
 max = 0
 h = height(ROOT(A), A, max, 0)
 print "height of tree: ",h
+
