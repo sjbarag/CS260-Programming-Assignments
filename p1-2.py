@@ -59,10 +59,10 @@ def NEXT(n) :
 
 
 # get previous position from node
-def PREVIOUS(lst) :
+def PREVIOUS(n, lst) :
 	temp = FIRST(lst)
 	while temp :
-		if temp.nxt == lst.cur :
+		if temp.nxt == n :
 			return temp
 		else :
 			temp = temp.nxt
@@ -161,15 +161,14 @@ printList(foo)
 
 print "moving to next position"
 # should be 2
-print NEXT(foo)
-MOVENEXT(foo)
-printList(foo)
+p = FIRST(foo)
+p = NEXT(p)
+print p
 
 print "moving back to previous position"
 # should be 4
-print PREVIOUS(foo)
-MOVEPREVIOUS(foo)
-printList(foo)
+p = PREVIOUS(p, foo)
+print p
 
 print "locating position of '1'"
 # should be 2

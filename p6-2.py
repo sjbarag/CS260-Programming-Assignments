@@ -370,9 +370,9 @@ for n in range(0, 5) :
 
 	t = Timer("herp()", "from __main__ import herp")
 	buildtime = t.timeit(NUMREPS)/(NUMREPS) # NUMREPS executions
-	print "Time to build tree of size", n, ": ", buildtime
+	print "Time to build tree of size    ", n, ":\t", buildtime
 
 
 	t = Timer("derp()", "from __main__ import derp")
 	travtime = t.timeit(NUMREPS)/(NUMREPS) # NUMREPS executions
-	print "Time to traverse tree of size", n, ": ", travtime-buildtime
+	print "Time to traverse tree of size ", n, ":\t", travtime-buildtime

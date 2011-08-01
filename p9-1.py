@@ -86,7 +86,7 @@ def CREATE1(v, T) :
 	# copy T's cellspace
 	for i in range(0, MAXNODES) :
 		if T.cellspace[i] is not None :
-			temp.cellspace[i] = T1.cellspace[i]
+			temp.cellspace[i] = T.cellspace[i]
 	# set new root
 	temp.cellspace[v] = node()
 	temp.cellspace[T.root] = node()
@@ -154,8 +154,6 @@ def CREATE2(v, T1, T2) :
 # @param T2	subtree to be to the right of T1
 # @param T3	subtree to be to the right of T2
 def CREATE3(v, T1, T2, T3) :
-	print "T1.root = ",T1.root
-	print "T2.root = ",T2.root
 	# make new, empty tree
 	temp = MAKENULL()
 	
@@ -206,8 +204,9 @@ def CREATE3(v, T1, T2, T3) :
 def ROOT(T) :
 	return T.cellspace[T.root]
 
-# prints contents of tree t containing root r [inorder].  There is probably a way to put this in 
-# tree class's __str__ function, I just haven't done it yet.
+# prints contents of tree t containing root r [inorder].  There is probably a
+# 	way to put this in tree class's __str__ function, I just haven't done it yet.
+# 	String concatentation, most likely.
 # @param r	the root of the tree in question
 def printTree(n, T) :
 	if n.lc is None :
@@ -221,30 +220,52 @@ def printTree(n, T) :
 			printTree(tmp, T)
 			tmp = RIGHT_SIBLING(tmp, T)
 
-##############################################
+#########################################################
+
+# returns the height of a node in a tree
+# @param n	node in question
+# @param T	tree containing n
+def height(n, T, m, i) :
+	if LEFTMOST_CHILD(n, T) is None :
+		return i+1		# no idea why this must be different than p9-2.py :)
+	else :
+		tmp = LEFTMOST_CHILD(n, T)
+		# for each other sibling, makelevels
+		while tmp is not None :
+			v = height(tmp, T, m, i+1)
+			if v > m :
+				m = v
+			tmp = RIGHT_SIBLING(tmp, T)
+		if i > m :
+			m = i
+		return m
 
 MAXNODES = 100
-foo = CREATE0(1)
-bar = CREATE0(2)
-baz = CREATE0(3)
-derp = CREATE2(4, foo, bar)
-hurr = CREATE0(7)
-herp = CREATE3(5, baz, derp, hurr)
 
+#### A..N replaced by integers 1..14 for simplicity.
+M = CREATE0(13)
+N = CREATE0(14)
+I = CREATE2(9, M, N)
 
-print "Printing herp (inorder):"
-printTree(ROOT(herp), herp)
-print
+D = CREATE0(4)
+E = CREATE1(5, I)
 
-n = ROOT(herp)
-print "n is ROOT(herp)"
-print n
-n = LEFTMOST_CHILD(n, herp)
-print "n is leftmost child of ROOT(herp):"
-print n
-n = RIGHT_SIBLING(n, herp)
-print "right sibling of n:"
-print n
-n = PARENT(n, herp)
-print "parent of n:"
-print n
+F = CREATE0(6)
+
+J = CREATE0(10)
+K = CREATE0(11)
+G = CREATE2(7, J, K)
+
+L = CREATE0(12)
+H = CREATE1(8, L)
+
+B = CREATE2(2, D, E)
+
+F = CREATE0(6)
+C = CREATE3(3, F, G, H)
+
+A = CREATE2(1, B, C)
+
+max = 0
+h = height(ROOT(A), A, max, 0)
+print "height of tree: ",h
