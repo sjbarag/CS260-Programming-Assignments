@@ -1,0 +1,36 @@
+MEMBERS
+	Sean Barag <sjb89>
+
+CONTENTS
+	p1-1.py
+		Problem 1: Lists with arrays
+	p1-2.py
+		Problem 1: Lists with pointers
+	p2-1.py	
+		Problem 2: Stacks with arrays
+	p2-2.py
+		Problem 2: Stacks with pointers
+	p3.py
+		Problem 3: Queues
+	p4-1.py
+		Problem 4: Trees with a list of children
+	p4-2.py
+		Problem 4: Trees with leftmost-child/right-sibling
+
+	p5-1.py
+		Problem 5: Timing for Python's list class
+	p5-2.py
+		Problem 5: Timing for my array-based list ADT
+	p5-3.py
+		PRoblem 5: Timing for my pointer-based list ADT
+	p6-1.py
+		Problem 6: Timing for trees with a list of children
+	p6-2.py
+		Problem 6: Timing for trees with leftmost-child/right-sibling
+
+	p7.py
+		Problem 7: Merge of n lists
+	p8.py
+		Problem 8: Concatenation of a list of lists
+	p9-1.py
+		Problem 9: Height
