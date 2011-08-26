@@ -28,8 +28,8 @@ def MEMBER(word, D) :
 	c = D[h(word)]
 	while c is not None :
 		if c.val == word :
-			print cProbe
-			print countList
+			#print cProbe
+			#print countList
 			countList.append(cProbe)
 			return True
 		else :
@@ -72,6 +72,7 @@ def DELETE(word, D) :
 				else :
 					c = c.nxt		# move to next node
 			return
+
 # prints a dictionary nicely
 # @param D	dictionary to print
 def printDict(D) :
@@ -86,20 +87,50 @@ def printDict(D) :
 	return
 
 
-
-
-B = 10
-DICTIONARY = MAKENULL()
-
+# used for each loop
 countList = []
+inputlines = []
 
+bList = []
+probeList = []
+avgList = []
+
+# save from stdin
 import sys
-for raw in sys.stdin.readlines() :
-	line = raw.strip().split(' ')
-	for w in line :
-		INSERT(w, DICTIONARY)
-printDict(DICTIONARY)
-total = 0
-for e in countList :
-	total += float(e)
-print float(total/float(len(countList)))
+for raw in sys.stdin.readlines():
+	inputlines.append(raw)
+
+for B in range(1, 15002, 250) :
+	# I like even numbers :)
+	if B != 1 :
+		B = B - 1
+	DICTIONARY = MAKENULL()
+	
+	countList = []
+	for raw in inputlines :
+		line = raw.strip().split(' ')
+		for w in line :
+			INSERT(w, DICTIONARY)
+	
+	# number of probes is O(1 + (n/B) )
+	# worst case of this is B = 1 (all elements in same bucket)
+	# this would require one probe for each element and one more for ... something.
+	
+	total = 0
+	for e in countList :
+		total += float(e)
+	#print "Number words:\t", len(countList)
+	#print "-"*30
+	#print "B:\t\t", B
+	#print "Total probes:\t", total
+	#print "Average probes:\t", float(total/float(len(countList)))
+	bList.append(B)
+	probeList.append(total)
+	avgList.append(float(total/float(len(countList))))
+
+print "Number of words: " +str(len(countList))
+print "  \tTotal  \t\tAverage"
+print "B \tProbes \t\tProbes"
+print "-"*37
+for i in range(len(bList)) :
+	print str(bList[i]) +"\t" + str(probeList[i]) + "  \t", avgList[i]
