@@ -24,18 +24,19 @@ def MAKENULL() :
 # @param D	dictionary that may or may not contain D
 # @return	True if word exists in D; False otherwise
 def MEMBER(word, D) :
+	global countListI
 	cProbe = 1
 	c = D[h(word)]
 	while c is not None :
 		if c.val == word :
 			#print cProbe
 			#print countList
-			countList.append(cProbe)
+			countListI.append(cProbe)
 			return True
 		else :
 			c = c.nxt
 			cProbe += 1
-	countList.append(cProbe)
+	countListI.append(cProbe)
 	return False
 
 # inserts a word into the appropriate bucket in D, provided the word is not already there
@@ -59,18 +60,25 @@ def INSERT(word, D) :
 # @param word	word to delete
 # @param D	dictionary from which word will be deleted
 def DELETE(word, D) :
+	global countListD
+	cProbe = 1
 	bucket = h(word)
 	if D[bucket] is not None :
 		if D[bucket].val == word :	# word is the first node
 			D[bucket] = D[bucket].nxt
+			countListD.append(cProbe)
+			return
 		else :	# c isn't in the first node.  This doesn't mean it exists at all, just that it wasn't first.
 			c = D[bucket]
 			# search
 			while c.nxt is not None :
 				if c.nxt.val == word :
 					c.nxt = c.nxt.nxt	# remove word form list
+					countListD.append(cProbe)
 				else :
 					c = c.nxt		# move to next node
+					cProbe += 1
+			countListD.append(cProbe)
 			return
 
 # prints a dictionary nicely
@@ -88,12 +96,17 @@ def printDict(D) :
 
 
 # used for each loop
-countList = []
+global countListI
+countListI = []
+global countListD
+countListD = []
 inputlines = []
 
 bList = []
-probeList = []
-avgList = []
+probeListI = []
+probeListD = []
+avgListI = []
+avgListD = []
 
 # save from stdin
 import sys
@@ -106,7 +119,7 @@ for B in range(1, 15002, 250) :
 		B = B - 1
 	DICTIONARY = MAKENULL()
 	
-	countList = []
+	countListI = []
 	for raw in inputlines :
 		line = raw.strip().split(' ')
 		for w in line :
@@ -116,21 +129,30 @@ for B in range(1, 15002, 250) :
 	# worst case of this is B = 1 (all elements in same bucket)
 	# this would require one probe for each element and one more for ... something.
 	
-	total = 0
-	for e in countList :
-		total += float(e)
-	#print "Number words:\t", len(countList)
-	#print "-"*30
-	#print "B:\t\t", B
-	#print "Total probes:\t", total
-	#print "Average probes:\t", float(total/float(len(countList)))
-	bList.append(B)
-	probeList.append(total)
-	avgList.append(float(total/float(len(countList))))
+	totalI = 0
+	for e in countListI :
+		totalI += e
 
-print "Number of words: " +str(len(countList))
-print "  \tTotal  \t\tAverage"
-print "B \tProbes \t\tProbes"
-print "-"*37
+	countListD = []
+	for raw in inputlines :
+		line = raw.strip().split(' ')
+		for w in line :
+			DELETE(w, DICTIONARY)
+	totalD = 0
+	for e in countListD :
+		totalD += e
+
+	
+	bList.append(B)
+	probeListI.append(totalI)
+	avgListI.append(float(totalI/float(len(countListI))))
+	probeListD.append(totalD)
+	avgListD.append(float(totalD/float(len(countListD))))
+
+print "Number of words: " +str(len(countListI))
+print "  \tInsert \t\tDelete \t\tInsert  \t\tDelete"
+print "  \tTotal  \t\tTotal  \t\tAverage \t\tAverage"
+print "B \tProbes \t\tProbes \t\tProbes  \t\tProbes"
+print "-" *88
 for i in range(len(bList)) :
-	print str(bList[i]) +"\t" + str(probeList[i]) + "  \t", avgList[i]
+	print str(bList[i]) +"\t" + str(probeListI[i]) +"   \t"  +str(probeListD[i]) +"    \t", avgListI[i], "\t\t", avgListD[i]

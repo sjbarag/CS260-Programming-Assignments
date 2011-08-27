@@ -1,3 +1,4 @@
+probeCount = 0
 # hashes a word using Python's builtin __hash__ function
 # @param word	word to hash
 # @return	bucket (out of B possibilities) for word
@@ -8,52 +9,36 @@ def h(word) :
 def MAKENULL() :
 	tmp = []
 	for i in range(B) :
-		tmp.append(None)	# I probably could use `tmp = [None]*B` but I had issues where all the elements maintained the same data before, hence the for loop.
+		tmp.append(None)	# I probably could use `tmp = [None]*B` but I had
+							# issues where all the elements maintained the same data before, hence the for
+							# loop.
 	return tmp
 
-# finds the location of word in D
-# @param word	word to find
-# @param D	dictionary to contain word
-# @returns 	index in D of word, or -1 if not found
 def LOCATE(word, D) :
-	i = h(word)
-	if D[i] == word :
-		return i
-	else :
-		j = (i+1)%B
-		while j != i :
-			if D[j] == word :
-				return j
-			else :
-				j = (j+1)%B
-		return -1
+	global g_probeCount
+	initial = h(word)
+	i = 0
+	while ( i < B ) and ( D[ (initial + i) % B ] != word ) and ( D[ (initial + i) % B ] is not None ) :
+		i += 1
+	g_probeCount += i
+	return  (initial + i) % B
 		
 # checks to see if word is in D
 # @param word 	word to test
 # @param D	dictionary that may or may not contain D
 # @returns	True if word exists in D; False otherwise
 def MEMBER(word, D) :
-	if LOCATE(word, D) != -1 :
-		return True
-	else :
-		return False
+	return D[ LOCATE(word, D) ] == word 
 		
 # inserts a word into the appropriate bucket in D, provided the word is not already there
 # @param word	word to insert
 # @param D	dictionary to contain word
 def INSERT(word, D) :
-	if not MEMBER(word, D) :
-		bucket = h(word)
-		if D[bucket] is None :
-			D[bucket] = word
-		else :
-			i = (bucket+1)%B
-			while i != bucket :
-				if D[i] is None :
-					D[i] = word
-					return
-				else :
-					i = (i+1)%B
+	bucket = LOCATE(word, D)
+	if D[ bucket ] == word :		# word is already present
+		return
+	elif D[ bucket ] is None :		# locate found an empty spot
+		D[ bucket ] = word
 	return
 
 # deletes a word from its bucket in D.  Does not test if it exists first, as that is lossy
@@ -66,20 +51,65 @@ def DELETE(word, D) :
 	return
 
 
-B = 10
-#DICTIONARY = MAKENULL()
-DICTIONARY = ['ligula', 'ipsum', 'adipiscing', 'sit', 'Lorem', 'dolor', 'consectetur', 'amet', 'elit', 'Phasellus']
+probeListI = []
+avgListI = []
+probeListD = []
+avgListD = []
+bList = []
+oList = []
+global g_probeCount
+g_probeCount = 0
 
 
-countList = []
-
+# save from stdin and count words
 import sys
+inputLines = []
+wc = 0
 for raw in sys.stdin.readlines() :
-	line = raw.strip().split(' ')
-	for w in line :
-		DELETE(w, DICTIONARY)
-print DICTIONARY
-#total = 0
-#for e in countList :
-#	total += float(e)
-#print float(total/float(len(countList)))
+	inputLines.append(raw)
+	wc += len(raw.split(' '))
+
+print "done counting words"
+
+B = 1
+for B in range(1, wc+100, 1000) :
+	# I like even numbers :)
+	if B != 1 :
+		B = B -1
+
+	DICTIONARY = MAKENULL()
+	g_probeCount = 0
+
+	for raw in inputLines :
+		line = raw.strip().split(' ')
+		for w in line :
+			INSERT(w, DICTIONARY)
+	#val = float(wc)/float(B)
+	#val = float(1) - val
+	#val = float(1)/float(val)
+	#val = float(1) + val
+	#val = val/float(2)
+	#val = 1 + (float(1)/float(1 - (float(wc)/float(B))) )
+	bList.append(B)
+	#oList.append(val)
+	probeListI.append(g_probeCount)
+	avgListI.append( float(g_probeCount/float(wc)) )
+
+	g_probeCount = 0
+	for raw in inputLines :
+		line = raw.strip().split(' ')
+		for w in line :
+			DELETE(w, DICTIONARY)
+	
+	probeListD.append(g_probeCount)
+	avgListD. append( float(g_probeCount/float(wc)) )
+
+print "Number of words: " +str(wc)
+print "  \tInsert \t\tDelete \t\tInsert \tDelete"
+print "  \tTotal  \t\tTotal  \t\tAverage \t\tAverage"
+print "B \tProbes \t\tProbes \t\tProbes  \t\tProbes"
+print "-" *88
+for i in range(len(probeListI)) :
+	print str(bList[i]) +"\t" +str(probeListI[i]) +"\t\t" +str(probeListD[i]) +"\t\t", avgListI[i], "\t\t", avgListD[i]
+	#print str(bList[i]) +"\t" +str(probeListI[i]) +"\t\t", avgListI[i]
+	#print str(bList[i]) +"\t" + str(oList[i]) +"\t" +str(probeListI[i]) +"\t\t", avgListI[i]
