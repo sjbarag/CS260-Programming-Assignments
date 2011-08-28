@@ -5,7 +5,7 @@ def DIJKSTRA2() :
 
 	param C		n x n array of costs
 	"""
-	n = 6
+	global n
 	S = [0]
 	V = range(n)
 	D = [0, 0, 0, 0, 0, 0]
@@ -15,6 +15,7 @@ def DIJKSTRA2() :
 	  	  [50, 50, 50,  0,  2, 50], \
 		  [50, 50, 50, 50,  0,  1], \
 		  [50, 50, 50, 50, 50,  0] ]
+	P = [None, None, None, None, None, None]
 	for i in range(1,n) :
 		D[i] = C[0][i]
 	for i in range(n-1) :
@@ -26,7 +27,10 @@ def DIJKSTRA2() :
 
 		vMinusS = [e for e in V if e not in S]
 		for v in vMinusS :
+			if D[w] + C[w][v] < D[v] :
+				P[v] = w
 			D[v] = min( D[v], D[w] + C[w][v] )
+	print "Intermediaries:", P
 	return D
 
 
@@ -54,7 +58,7 @@ a = [ [0, 0, 0, 0, 0,  0], \
 
 
 #print DIJKSTRA2(c)
-print "Final distances: "
 dist = DIJKSTRA2()
+print "Final distances: "
 for i in range(n) :
 	print "0 ->", i, ":", dist[i]
