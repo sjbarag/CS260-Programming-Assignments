@@ -1,8 +1,8 @@
 class node :
-	def __init__(self) :
-		self.element = None
-		self.lc  = None
-		self.rc = None
+	def __init__(self, element=None, lc=None, rc=None) :
+		self.element = element
+		self.lc  = lc
+		self.rc = rc
 
 	def __str__(self) :
 		return str(self.element)
@@ -26,27 +26,21 @@ def MEMBER(x, A) :
 # @param A	set that will contain x
 def INSERT(x, A) :
 	if A is None :
-		A = node()
-		A.element = x
+		A = node(x)
 		A.lc = None
 		A.rc = None
 	elif x < A.element :
-		INSERT(x, A.lc)
+		if A.lc is not None :
+			INSERT(x, A.lc)
+		else :
+			A.lc = node(x)
 	elif x > A.element :
-		INSERT(x, A.rc)
+		if A.rc is not None :
+			INSERT(x, A.rc)
+		else :
+			A.rc = node(x)
+	return A
 	# if x == A.element, then x is already present.  We do nothing.
-
-def INSERT(x, A) :
-	tmp = A
-	while tmp.lc is not None or tmp.rc is not None:
-		if x < tmp.element :
-			tmp = tmp.lc
-		elif x > tmp.element :
-			tmp = tmp.rc
-		elif x == tmp.element :
-			return
-	A = node()
-	A.element = x
 
 # returns and removes the smallest element from set A
 # @param A	set in question
@@ -100,17 +94,27 @@ def LOCATE(x, A, i=0) :
 
 
 from random import shuffle
+from math import log
 
-MAXVALUE = 10
-values = range(0, MAXVALUE)
-shuffle(values)
-print values
+NUMLOOPS = 25
+lengthList = []
+avgList = []
+lengthSum = 0
 
-BST = None
+for i in range(1, NUMLOOPS+1) :
+	MAXVALUE = 10 * i
+	values = range(0, MAXVALUE)
+	shuffle(values)
+	BST = None
+	for e in values :
+		BST = INSERT(e, BST)
 
-for e in values :
-	INSERT(e, BST)
-	print BST
+	for e in values :
+		lengthSum += LOCATE(e, BST)
 
-for e in values :
-	print LOCATE(e, BST)
+	avgList.append( float(lengthSum)/float(MAXVALUE) )
+
+print "n \t\tlog_2(n)\t\tAvg Length"
+print "-"*60
+for i in range(NUMLOOPS) :
+	print (i+1)*10, "\t\t", log((i+1)*10,2), "\t\t", avgList[i]
