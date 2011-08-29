@@ -1,0 +1,75 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{siunitx}
+\usepackage{amsmath}
+
+\pagestyle{fancy}
+\lhead{CS 260}
+\chead{Programming Assignment 2: Hash Table Probe Analysis}
+\rhead{Sean Barag}
+
+\title{Programming Assignment 2: Hash Table Probe Analysis}
+\author{Sean Barag\\ \texttt{<sjb89@drexel.edu>}}
+
+\newcommand{\tbf}[1]{\textbf{#1}}
+
+\begin{document}
+\maketitle
+Programming assignment two required students to compare the open and closed
+hash tables as a means of storing a dictionary.  This was measured in the
+average number of probes required to insert and delete fixed number of elements
+to a hash table with varying number of buckets.
+
+\section{Open Hashing}
+The complete Project Gutenberg Etext of \emph{Alice's Adventures In Wonderland}
+was used as an input to the hash table.  With the number of buckets ranging
+from just one up to 15,000 (an arbitrary point at which the average number of
+probes appeared to stabilize) at increments of 250, each word in the input was
+inserted into the table.  Once all words had been successfully added, the input
+was again parsed so that each word could be deleted.  The results of this
+experiment can be seen in Table~\ref{tab:openData}.
+%
+\input{openData.tex}
+%
+The expected trend for both insertion and deletion for this test is $O(1 +
+\frac{N}{B})$, where $N$ is the number of elements being inserted (in this
+case, 28,198 words according to Bash \texttt{wc -l}).  While the data certainly
+decays, it does so at a much faster rate than is expected, resembling a
+logarithmic function more closely than the provided formula.  This is most
+likely due to the underlying data structure of a linked list, which requires
+$O(\log_2 n)$ time to traverse.  Since each bucket potentially contains a fully
+qualified linked list and a probe was considered one comparison of a linked
+list node to the word in question, the measured logarithmic behavior is not
+very surprising.
+
+\section{Closed Hashing}
+Closed hashing was tested in a nearly identical way to open hashing:
+\emph{Alice in Wonderland} was parsed, with each word getting added to the
+closed hash table where space allowed.  At the end of the insertions, the story
+was again parsed so that each word could be deleted.  $B$, the number of
+buckets, was varied from one to 34,000 in increments of 1,000. The resulting
+total and average number of probes is shown in Table~\ref{tab:closedData}.
+%
+\input{closedData.tex}
+%
+Insertion for closed hash tables is expected to require approximately
+$\frac{1}{2} \cdot \left(1 + \frac{1}{1-\frac{N}{B}}\right)$ probes, whereas
+deletion should need roughly $\frac{1}{2} \cdot \left(1 +
+\frac{1}{\left(1-\frac{N}{B}\right)^2}\right)$ probes of the table.  It is
+clear in cases where $B < N$ that this should result in a negative number of
+probes, something that is quite obviously not possible and which did not occur.
+This does not occur for deletions as a result of the polynomial in the
+denominator.  Of note in particular is the fact that zero probes were required
+for a bucket of size one, as only one word can be stored in such a dictionary.
+
+\section{Conclusions}
+In conclusion, open hashing has a much more predictable behavior than closed
+hashing, at least on the scope of this trial.  The drastic error in results
+shown here is most likely due to the low (relative to the total word count)
+number of buckets used throughout the experiment.
+\end{document}
