@@ -177,7 +177,7 @@ def ADD_WORD(word, lst) :
 				# move to appropriate child
 				L = GETNODE(LOCATE(letter, L), L).child
 		else :
-			# add node to end of current list
+			# create a first node
 			L = MAKENULL()
 			INSERT(letter, END(L), L)
 			# move to current list
