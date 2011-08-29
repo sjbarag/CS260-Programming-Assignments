@@ -22,14 +22,14 @@ def LOCATE(word, D) :
 		i += 1
 	g_probeCount += i
 	return  (initial + i) % B
-		
+
 # checks to see if word is in D
 # @param word 	word to test
 # @param D	dictionary that may or may not contain D
 # @returns	True if word exists in D; False otherwise
 def MEMBER(word, D) :
-	return D[ LOCATE(word, D) ] == word 
-		
+	return D[ LOCATE(word, D) ] == word
+
 # inserts a word into the appropriate bucket in D, provided the word is not already there
 # @param word	word to insert
 # @param D	dictionary to contain word
@@ -69,8 +69,6 @@ for raw in sys.stdin.readlines() :
 	inputLines.append(raw)
 	wc += len(raw.split(' '))
 
-print "done counting words"
-
 B = 1
 for B in range(1, wc+100, 1000) :
 	# I like even numbers :)
@@ -100,7 +98,7 @@ for B in range(1, wc+100, 1000) :
 		line = raw.strip().split(' ')
 		for w in line :
 			DELETE(w, DICTIONARY)
-	
+
 	probeListD.append(g_probeCount)
 	avgListD. append( float(g_probeCount/float(wc)) )
 
