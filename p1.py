@@ -21,8 +21,8 @@ class a :
 		self.leaf = leaf
 	def __str__(self) :
 		return str(self.symb) + "\t" + str(self.prob) + "\t" + str(self.leaf)
-		
-# class for FOREST elementes
+
+# class for FOREST elements
 # @instance weight	weight of this entry
 # @instance root	index of entry in TREE containing this element's root
 class f :
@@ -36,64 +36,60 @@ class f :
 # @param least		destination of index of smallest weight in FOREST
 # @param second		destination of index of second smallest weight in FOREST
 # inspired by procedure "lightones", Fig 3.27 (p.100)
-def lightones(least, second) :
-	# initialize least and second, considering first two trees
-	if FOREST[0].weight <= FOREST[1].weight :
-		least = 0
-		second = 1
-	else :
-		least = 1
-		second = 0
-	# now let i run from 3 to global LASTTREE.  At each iteration least is the tree of smallest weight among the first i trees in FOREST, and second is the next smallest of these
-	for k in range(2, len(FOREST)) :
-		if FOREST[k].weight < FOREST[least].weight :
-			second = least
-			least = k
-		elif FOREST[k].weight < FOREST[second].weight :
-			second = k
+def lightones() :
+	tmp = copy.deepcopy(FOREST)			# using this to get a true copy of the FOREST array.
+	least = min( [e.weight for e in tmp] )
+	for e in tmp :
+		if e.weight == least :
+			least = tmp.index(e)
+			tmp[least].weight = 1000	# known impossibly high number to get this one out of the way
+	second = min( [e.weight for e in tmp] )
+	for e in tmp :
+		if e.weight == second :
+			second = tmp.index(e)
 	return [least, second]
 
-#returns new node whose left and right children are FOREST[lefttree].root and FOREST[righttree].root.
+# returns new node whose left and right children are FOREST[lefttree].root and FOREST[righttree].root.
 # @param lefttree	node that will be the new left node
 # @param righttree	node that will be the new right node
 # @return 		node with children lefttree and righttree
-def create(lefttree, righttree, lastnode) :
-	lastnode = lastnode + 1
-	
-	print "l, r, last:", lefttree, righttree, lastnode
-	
-	# cell for new node is TREE[LASTNODE]
-	TREE[lastnode].lc = FOREST[lefttree].root
-	TREE[lastnode].rc = FOREST[righttree].root
+def create(lefttree, righttree) :
+	TREE.append(t(None, None, None))
+
+	# cell for new node is TREE[-1]
+	TREE[-1].lc = FOREST[lefttree].root
+	TREE[-1].rc = FOREST[righttree].root
 
 	# now enter parent pointers for new node and its children
-	TREE[lastnode].parent = None
-	TREE[FOREST[lefttree].root].parent = lastnode
-	TREE[FOREST[righttree].root].parent = lastnode
-	return lastnode
-	
-	
+	TREE[-1].parent = None
+	TREE[FOREST[lefttree].root].parent = len(TREE)-1
+	TREE[FOREST[righttree].root].parent = len(TREE)-1
+	return
+
+
 def Huffman() :
 	i = 0
 	j = 0
-	lastnode = 0
 	while len(FOREST) > 1 :
-		ij = lightones(i, j)
+		#ij = lightones(i, j)
+		ij = lightones()
 		i = ij[0]
 		j = ij[1]
-		print "i, j:", i, j, "\n"
-		newroot = create(i, j, lastnode)
-		lastnode = newroot
+		create(i, j)
 
 		# now replace tree i by the tree whose root is newroot
 		FOREST[i].weight = FOREST[i].weight + FOREST[j].weight
-		FOREST[i].root = newroot
+		FOREST[i].root = len(TREE)-1
 
 		# next, replace tree j, which is no longer needed, by global LASTTREE, and shrink FOREST by one
-		FOREST[j] = FOREST[-1]
-		del FOREST[-1]
-	return	
-	
+		del FOREST[j]
+		#FOREST[j] = FOREST[-1]
+		#del FOREST[-1]
+	return
+
+
+
+
 # FOREST array initialization
 # data from problem 3.20 (p.106), scaled to 0-100 instead of 0-1 to avoid issues with Python's floating point type
 # structure from Fig 3.25 (p.99)
@@ -107,7 +103,7 @@ def Huffman() :
 #  +-----+---+
 #  WEIGHT ROOT
 
-FOREST = [f(7,0), f(9,1), f(12,2), f(22,3), f(22,4), f(27,5)]
+FOREST = [f(7,0), f(9,1), f(12,2), f(22,3), f(23,4), f(27,5)]
 
 # ALPHABET array initialization
 # data from problem 3.20 (p.106), scaled to 0-100 instead of 0-1 to avoid issues with Python's floating point type
@@ -137,9 +133,9 @@ ALPHABET = [a('a',7,0), a('b',9,1), a('c',12,2), a('d',22,3), a('e',23,4), a('f'
 #  +---+---+---+
 #   LC  RC  PARENT
 
-# extra three locations required as padding for output
 n = None
-TREE = [t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n)]
+TREE = [t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n), t(n,n,n)]
+import copy		# I need deepcopy :/
 
 print "----- Initial values -----"
 print "FOREST:"
@@ -172,5 +168,5 @@ print
 
 print "TREE:"
 for k in range(len(TREE)):
-	print TREE[k]
+	print k,":", TREE[k]
 print
