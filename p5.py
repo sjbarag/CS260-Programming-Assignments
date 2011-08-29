@@ -3,9 +3,9 @@ class Node:
 		self.cargo = None
 		self.nxt = None
 		self.child = None
-	
+
 	def __str__(self):
-		return str(self.cargo) 	
+		return str(self.cargo)
 
 class myList:
 	def __init__(self):
@@ -15,7 +15,7 @@ class myList:
 # clear list
 def MAKENULL() :
 	temp = myList()
-	
+
 	return temp
 
 # return head of list
@@ -52,18 +52,18 @@ def RETREIVE(pos, lst) :
 		if temp.nxt != None :
 			temp = temp.nxt
 	return temp.cargo
-	
+
 def GETNODE(pos, lst) :
 	temp = FIRST(lst)
 	for k in range(0, pos) :
 		if temp.nxt != None :
 			temp = temp.nxt
-	return temp	
+	return temp
 
 # get next position in list
 def NEXT(n) :
 	return n.nxt
-	
+
 
 
 # get previous position from node
@@ -75,7 +75,7 @@ def PREVIOUS(n, lst) :
 		else :
 			temp = temp.nxt
 	return None # no change if doesn't exist
-	
+
 # head insertion, returns new head
 def INSERT(val, pos, lst) :
 	# create new node with cargo 'val'
@@ -108,7 +108,7 @@ def INSERT(val, pos, lst) :
 			n.nxt = tmp.nxt
 			tmp.nxt = n
 			# copy tmp into lst
-			#lst = tmp 	        
+			#lst = tmp
 		return
 
 def DELETE(pos, lst) :
@@ -146,8 +146,6 @@ def printList(lst) :
 # @param lst		list to be parent of letter
 # @return 		the new node
 def ADD_CHILD(letter, lst) :
-	print letter,
-	if letter == '$' : print
 	l = myList()
 	n = Node()
 	n.cargo = letter
@@ -159,7 +157,7 @@ def ADD_CHILD(letter, lst) :
 
 
 def ADD_WORD(word, lst) :
-	print word
+	global wc
 	L = lst
 	for letter in word :
 		if L is not None :
@@ -168,12 +166,12 @@ def ADD_WORD(word, lst) :
 				INSERT(letter, END(L), L)
 				# move to current list
 				#L = END(L)
-				print letter, 
 				# letter doesn't exist, so add the rest of them
 				for ltr in word[word.index(letter)+1:] :
 					t = ADD_CHILD(ltr, L)
 					L = t
 				ADD_CHILD('$', L)
+				wc += 1
 				return lst
 			else :
 				# move to appropriate child
@@ -182,7 +180,6 @@ def ADD_WORD(word, lst) :
 			# add node to end of current list
 			L = MAKENULL()
 			INSERT(letter, END(L), L)
-			print letter, 
 			# move to current list
 			L = END(L)
 			# letter doesn't exist, so add the rest of them
@@ -190,45 +187,20 @@ def ADD_WORD(word, lst) :
 				t = ADD_CHILD(ltr, L)
 				L = t
 			ADD_CHILD('$', L)
+			wc += 1
 			return lst
 	return lst
 
-
-
-def printWords(lst) :
-	print tmp,
-	while tmp.nxt is not None :
-		printWords(tmp.child)
-		tmp = tmp.nxt
-		
-		
-
-	
 Trie = MAKENULL()
 
+global wc
+wc = 0
 import sys
 for rawline in sys.stdin.readlines() :
 	cleanline = rawline.strip().split(' ')
 	for word in cleanline :
 		Trie = ADD_WORD(word.lower(), Trie)
 
-
-##############################################
-# Resultant Trie for input: "The then thin this tin sin sing singe"
-#    t --------------> s
-#    |                 |
-#    h ---------> i    i
-#    |            |    |
-#    e ---> i     n    n
-#    |      |     |    |
-#    $->n   n->s  $    $ -> g
-#       |   |  |            |
-#       $   $  $            $->e
-#                              |
-#                              $
-##############################################
-
-
-printList(Trie)				# t s
-printList(Trie.head.child)		# h i
-printList(Trie.head.child.child)	# e i
+print "Size of the trie = number of leaf nodes in trie ="
+print "    number of '$'s inserted into trie."
+print "Trie size: ", wc
