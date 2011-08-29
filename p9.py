@@ -25,6 +25,7 @@ L = [ [1, 3, 5], \
 	  [3, 5], \
 	  [3] ]
 
+print "Results of Depth-first Search, starting at 'A,' for the directed graph in Figure 6.38:"
 for v in range(NUMNODES) :
 	if not mark[v] :
 		DFS(v)
