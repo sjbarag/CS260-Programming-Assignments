@@ -6,7 +6,7 @@ CONTENTS
 		Problem 1: 	Lists with arrays
 	p1-2.py
 		Problem 1: 	Lists with pointers
-	p2-1.py	
+	p2-1.py
 		Problem 2: 	Stacks with arrays
 	p2-2.py
 		Problem 2: 	Stacks with pointers
@@ -61,9 +61,3 @@ COMPILATION & EXECUTION
 		make permissions
 	This option exists so that you don't automatically have to elevate the
 	permissions for these files (even though they only elevate for you).
-
-TEST CASES
-	TODO
-
-PROGRAM OUTPUT
-	TODO
