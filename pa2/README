@@ -1,0 +1,86 @@
+MEMBERS
+	Sean Barag <sjb89@drexel.edu>
+
+
+CONTENTS
+	Makefile
+		The required file for the GNU Make utility
+	README
+		This document
+	report/report.tex
+		LaTeX source file for the timing report
+	report/report.pdf
+		pdflatex-generated output file for the timing report
+	output.txt
+		Sample output of running '$ make', as captured by BSD script on my system.
+		This is included in the appropriate section below.
+
+	p1.py
+		Problem 1: 	Huffman Algorithm
+
+	p2.py
+		Problem 2: 	Open Hashing
+	p3.py
+		Problem 3: 	Closed Hashing
+
+	p4.py
+		Problem 4: 	Binary Search Trees
+	p5.py
+		PRoblem 5: 	Tries
+	p6.py
+		Problem 6: 	Dijkstra's Shortest Path Algorithm
+	p8.py
+		Problem 8: 	Floyd's Algorithm
+	p9.py
+		Problem 9: 	Depth-first Search
+	p10.py
+		Problem 10: Fast Fourier Transform
+					NOTE: This code does not run
+
+
+COMPLETE
+	Problems 1, 2, 3, 4, 5, 6, 8, and 9
+
+
+NOT COMPLETE
+	Problems 7 and 10.
+
+
+UNFINISHED
+	Problem 10.  This could be completed if I had a better understanding of FFT
+				 outside of programming, and if I hadn't abandoned it for other
+				 problems.
+
+
+COMPILATION & EXECUTION
+	All scripts run correctly using Python 2.7.2.  I do not guarantee
+	compatibility with Python 3.x, though I don't foresee any issues.
+
+	To execute all:
+		make
+
+	To execute individual questions:
+		make q[12345689]
+
+	If the .py files do need execution permissions on your system:
+		make permissions
+			This option exists so that you don't automatically have to elevate
+			the permissions for these files (even though they only elevate for the current
+			user).
+
+	To build the report:
+		make report
+			This assumes you have a valid installation of TeX-live, including
+			pdflatex.  The PDF file is already included, but if you want to regenerate the
+			output, this will work.
+
+
+TEST CASES
+	Test cases for each question are shown in the final portions of each Python
+	script.  The prepared examples should be robust enough to demonstrate a
+	thorough understanding of the datatype or algorithm and the completion of the assignment.
+	In cases where an example has been provided (e.g. q2, q3), it was used with
+	the assumption that it was chosen because it satisfies the requirements.
+
+	If modifications are required, they should be made below all of the
+	function definitions, where the current demonstration code resides.
